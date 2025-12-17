@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
-import { PieChart, Pie, Cell, Tooltip, Legend} from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer} from "recharts";
 
 function Dashboard() {
   const [amount, setAmount] = useState("");
@@ -17,6 +17,8 @@ function Dashboard() {
   "#FF8042",
   "#A855F7"
 ];
+  const expenseCount = expenses.length;
+  const categoryCount = categoryData.length;
 
   const token = localStorage.getItem("token");
 
@@ -112,6 +114,21 @@ const fetchExpenses = async () => {
     window.location.href = "/";
   };
 
+  const categoryColor = (category) => {
+    switch (category) {
+      case "Food":
+        return "bg-green-100 text-green-700";
+      case "Transport":
+        return "bg-blue-100 text-blue-700";
+      case "Shopping":
+        return "bg-purple-100 text-purple-700";
+      case "Bills":
+        return "bg-yellow-100 text-yellow-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -119,14 +136,40 @@ const fetchExpenses = async () => {
         <h1 className="text-xl font-bold">Expense Tracker</h1>
         <button
           onClick={logout}
-          className="bg-red-500 text-white px-4 py-1 rounded"
+          className="bg-red-500 text-white px-4 py-1 rounded-lg hover:bg-red-600 active:scale-95 transition"
         >
           Logout
         </button>
       </div>
 
+      {/* Summary Cards */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        
+        <div className="bg-white rounded-xl shadow p-4">
+          <p className="text-sm text-gray-500">Total Spent</p>
+          <h2 className="text-2xl font-bold text-blue-600">
+            ₹{totalExpense}
+          </h2>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-4">
+          <p className="text-sm text-gray-500">Total Expenses</p>
+          <h2 className="text-2xl font-bold">
+            {expenseCount}
+          </h2>
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-4">
+          <p className="text-sm text-gray-500">Categories</p>
+          <h2 className="text-2xl font-bold text-green-600">
+            {categoryCount}
+          </h2>
+        </div>
+
+      </div>
+
       {/* Content */}
-      <div className="max-w-5xl mx-auto p-6 grid md:grid-cols-2 gap-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Add Expense */}
         <div className="bg-white p-6 rounded-xl shadow">
@@ -163,9 +206,9 @@ const fetchExpenses = async () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 active:scale-95 transition"
             >
-              Add Expense
+              + Add Expense
             </button>
           </form>
         </div>
@@ -181,19 +224,33 @@ const fetchExpenses = async () => {
               {expenses.map(exp => (
                 <li
                   key={exp._id}
-                  className="flex justify-between items-center border p-2 rounded"
+                  className="flex justify-between items-start border rounded-lg p-3 hover:bg-gray-50 transition"
                 >
-                  <div className="pr-2">
-                    <p className="font-medium">
-                      ₹{exp.amount} – {exp.category}
+                 <div className="pr-2">
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold text-gray-800">
+                      ₹{exp.amount}
                     </p>
-                    <p className="text-sm text-gray-500 break-words whitespace-normal max-w-xs">
-                    {exp.description}
-                    </p>
+                    <span
+                      className={`text-xs px-2 py-0.5 rounded-full ${categoryColor(
+                        exp.category
+                      )}`}
+                    >
+                      {exp.category}
+                    </span>
                   </div>
+
+                  {exp.description && (
+                    <p className="text-sm text-gray-500 break-words whitespace-normal max-w-xs mt-1">
+                      {exp.description}
+                    </p>
+                  )}
+                </div>
+ 
                   <button
                     onClick={() => deleteExpense(exp._id)}
-                    className="text-red-500"
+                      className="text-gray-400 hover:text-red-500 transition"
+                      title="Delete expense"
                   >
                     ❌
                   </button>
@@ -202,37 +259,60 @@ const fetchExpenses = async () => {
             </ul>
           )}
         </div>
-        {/* Category Pie Chart */}
-      <div className="bg-white p-6 rounded-xl shadow">
-        <h2 className="text-lg font-semibold mb-4">
-          Category-wise Spending
-        </h2>
+          {/* Category Pie Chart */}
+        <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+          <h2 className="text-lg font-semibold mb-4">
+            Category-wise Spending
+          </h2>
 
-        {categoryData.length === 0 ? (
-          <p className="text-gray-500">No data</p>
-        ) : (
-          <PieChart width={300} height={300}>
-            <Pie
-              data={categoryData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              label
-            >
-              {categoryData.map((_, index) => (
-                <Cell
-                  key={index}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        )}
-      </div>
+          {categoryData.length === 0 ? (
+            <p className="text-gray-500">No data</p>
+          ) : (
+            <div className="flex justify-center">
+            <PieChart width={300} height={300}>
+              <Pie
+                data={categoryData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                label
+              >
+                {categoryData.map((_, index) => (
+                  <Cell
+                    key={index}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+            </div>
+          )}
+        </div>
+            {/* Monthly Expense Bar Chart */}
+        <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+          <h2 className="text-lg font-semibold mb-4">
+            Monthly Spending
+          </h2>
+
+          {monthlyData.length === 0 ? (
+            <p className="text-gray-500">No data</p>
+          ) : (
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={monthlyData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="amount" />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+
       </div>
     </div>
   );
