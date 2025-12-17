@@ -26,6 +26,15 @@ function Dashboard() {
     setExpenses(res.data);
   };
 
+  const deleteExpense = async (id) => {
+    await API.delete(`/expenses/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+        }
+      });
+      fetchExpenses();
+    };
+
   const addExpense = async (e) => {
     e.preventDefault();
     await API.post(
@@ -42,7 +51,6 @@ function Dashboard() {
         }
       }
     );
-
     setAmount("");
     setDescription("");
     fetchExpenses();
@@ -51,6 +59,14 @@ function Dashboard() {
   return (
     <div>
       <h2>Dashboard</h2>
+      <button
+      onClick={() => {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+        }}
+      >
+        Logout
+      </button>
 
       <form onSubmit={addExpense}>
         <input
@@ -85,6 +101,7 @@ function Dashboard() {
         {expenses.map(exp => (
           <li key={exp._id}>
             ₹{exp.amount} - {exp.category} - {exp.description}
+            <button onClick={() => deleteExpense(exp._id)}>🗑️</button>
           </li>
         ))}
       </ul>
