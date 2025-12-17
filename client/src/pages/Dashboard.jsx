@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import { PieChart, Pie, Cell, Tooltip, Legend} from "recharts";
 
 function Dashboard() {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Food");
   const [description, setDescription] = useState("");
   const [expenses, setExpenses] = useState([]);
+  const [totalExpense, setTotalExpense] = useState(0);
+  const [categoryData, setCategoryData] = useState([]);
+  const [monthlyData, setMonthlyData] = useState([]);
+  const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#A855F7"
+];
 
   const token = localStorage.getItem("token");
 
@@ -17,14 +28,54 @@ function Dashboard() {
     }
   }, []);
 
-  const fetchExpenses = async () => {
-    const res = await API.get("/expenses", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+  const calculateAnalytics = (expenses) => {
+  // Total Expense
+  const total = expenses.reduce(
+    (sum, exp) => sum + Number(exp.amount),
+    0
+  );
+  setTotalExpense(total);
+
+  // Category-wise data
+  const categoryMap = {};
+  expenses.forEach(exp => {
+    categoryMap[exp.category] =
+      (categoryMap[exp.category] || 0) + Number(exp.amount);
+  });
+
+  const categoryArray = Object.keys(categoryMap).map(key => ({
+    name: key,
+    value: categoryMap[key]
+  }));
+  setCategoryData(categoryArray);
+
+  // Monthly data
+  const monthMap = {};
+  expenses.forEach(exp => {
+    const month = new Date(exp.date).toLocaleString("default", {
+      month: "short"
     });
-    setExpenses(res.data);
-  };
+    monthMap[month] = (monthMap[month] || 0) + Number(exp.amount);
+  });
+
+  const monthArray = Object.keys(monthMap).map(key => ({
+    month: key,
+    amount: monthMap[key]
+  }));
+  setMonthlyData(monthArray);
+};
+
+
+const fetchExpenses = async () => {
+  const res = await API.get("/expenses", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  setExpenses(res.data);
+  calculateAnalytics(res.data);
+};
 
   const addExpense = async (e) => {
     e.preventDefault();
@@ -75,7 +126,7 @@ function Dashboard() {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto p-6 grid md:grid-cols-2 gap-6">
+      <div className="max-w-5xl mx-auto p-6 grid md:grid-cols-2 gap-6">
         
         {/* Add Expense */}
         <div className="bg-white p-6 rounded-xl shadow">
@@ -151,6 +202,37 @@ function Dashboard() {
             </ul>
           )}
         </div>
+        {/* Category Pie Chart */}
+      <div className="bg-white p-6 rounded-xl shadow">
+        <h2 className="text-lg font-semibold mb-4">
+          Category-wise Spending
+        </h2>
+
+        {categoryData.length === 0 ? (
+          <p className="text-gray-500">No data</p>
+        ) : (
+          <PieChart width={300} height={300}>
+            <Pie
+              data={categoryData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              label
+            >
+              {categoryData.map((_, index) => (
+                <Cell
+                  key={index}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        )}
+      </div>
       </div>
     </div>
   );
