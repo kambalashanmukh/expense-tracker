@@ -73,5 +73,11 @@ server/
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## 🧑‍💻 Author
-**SHANMUKH**
+## Contact
+
+For any inquiries or feedback, feel free to reach out:
+
+- Email: kambalashannu123@gmail.com
+- GitHub: [kambalashanmukh](https://github.com/kambalashanmukh)
+
+Happy coding!
