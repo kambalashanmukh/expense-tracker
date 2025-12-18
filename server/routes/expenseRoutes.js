@@ -10,7 +10,7 @@ const {
 
 router.post("/", auth, addExpense);
 router.get("/", auth, getExpenses);
-router.put("/:id", auth, updateExpense);   // 👈 ADD THIS
+router.put("/:id", auth, updateExpense); 
 router.delete("/:id", auth, deleteExpense);
 
 module.exports = router;

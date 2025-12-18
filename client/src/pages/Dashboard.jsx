@@ -180,7 +180,7 @@ function Dashboard() {
       {/* Main */}
       <div className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-        {/* Sidebar (NOT sticky anymore) */}
+        {/* Sidebar*/}
         <div className="lg:col-span-1 bg-white rounded-xl shadow p-5 space-y-6 h-fit">
           <div>
             <p className="text-sm text-gray-500">Total Spent</p>
@@ -295,7 +295,10 @@ function Dashboard() {
 
         {/* Expense List */}
         <div className="lg:col-span-4 bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold mb-4">Your Expenses</h2>
+          <h2 className="text-lg font-semibold mb-1">Your Expenses</h2>
+          <p className="text-sm text-gray-400 mb-4">
+            Manage and review your spending
+          </p>
 
           <ul className="space-y-3">
             {expenses.map(exp => (
@@ -319,18 +322,18 @@ function Dashboard() {
                 </div>
 
                 <div className="flex gap-2">
-                  <button
-                    onClick={() => openEditModal(exp)}
-                    className="text-blue-500 hover:underline"
-                  >
-                    ✏️
-                  </button>
-                  <button
-                    onClick={() => deleteExpense(exp._id)}
-                    className="text-red-500"
-                  >
-                    ❌
-                  </button>
+                <button
+                  onClick={() => openEditModal(exp)}
+                  className="text-gray-400 group-hover:text-blue-500 transition"
+                >
+                  ✏️
+                </button>
+                <button
+                  onClick={() => deleteExpense(exp._id)}
+                  className="text-gray-400 group-hover:text-red-500 transition"
+                >
+                  ❌
+                </button>
                 </div>
               </li>
             ))}
@@ -339,7 +342,8 @@ function Dashboard() {
 
         {/* Edit Expense Modal */}
         {showEditModal && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div
+            className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 blur-backdrop">
             <div className="bg-white rounded-xl p-6 w-full max-w-md animate-scale-in">
 
               <h2 className="text-lg font-semibold mb-4">Edit Expense</h2>
