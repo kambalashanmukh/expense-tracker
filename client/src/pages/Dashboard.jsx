@@ -343,7 +343,7 @@ function Dashboard() {
         {/* Edit Expense Modal */}
         {showEditModal && (
           <div
-            className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 blur-backdrop">
+            className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
             <div className="bg-white rounded-xl p-6 w-full max-w-md animate-scale-in">
 
               <h2 className="text-lg font-semibold mb-4">Edit Expense</h2>

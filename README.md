@@ -62,7 +62,12 @@ server/
 - Dynamic recalculation on add/edit/delete
 
 ## 📸 Screenshots
-(Add screenshots here)
+
+### 📝 Register Page
+![Register Page](client/public/register-page.png)
+
+### 📊 Dashboard
+![Dashboard](client/public/dashboard-page.png)
 
 ## 🧑‍💻 Author
 **SHANMUKH**
