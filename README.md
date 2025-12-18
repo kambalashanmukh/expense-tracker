@@ -32,7 +32,7 @@ A full-stack personal expense tracker built using the MERN stack with secure aut
 - bcrypt.js
 
 ## 📂 Project Structure
-
+```bash
 client/
 ├─ src/
 │ ├─ pages/
@@ -47,7 +47,7 @@ server/
 ├─ routes/
 ├─ middleware/
 └─ server.js
-
+```
 ## 🔑 Authentication Flow
 
 - Users register and login securely
