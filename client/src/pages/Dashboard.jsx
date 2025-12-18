@@ -171,22 +171,40 @@ const fetchExpenses = async () => {
       {/* Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        {/* Add Expense */}
-        <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="text-lg font-semibold mb-4">Add Expense</h2>
+      {/* Add Expense */}
+      <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
+        <h2 className="text-lg font-semibold mb-1">Add Expense</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Quickly log your spending
+        </p>
 
-          <form onSubmit={addExpense} className="space-y-3">
-            <input
-              type="number"
-              placeholder="Amount"
-              className="w-full p-2 border rounded"
-              value={amount}
-              onChange={e => setAmount(e.target.value)}
-              required
-            />
+        <form onSubmit={addExpense} className="space-y-4">
 
+          {/* Amount */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Amount
+            </label>
+            <div className="flex items-center border rounded-lg px-3 focus-within:ring-2 focus-within:ring-blue-500">
+              <span className="text-gray-500 mr-2">₹</span>
+              <input
+                type="number"
+                placeholder="0.00"
+                className="w-full py-2 outline-none"
+                value={amount}
+                onChange={e => setAmount(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Category */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Category
+            </label>
             <select
-              className="w-full p-2 border rounded"
+              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
               value={category}
               onChange={e => setCategory(e.target.value)}
             >
@@ -196,22 +214,33 @@ const fetchExpenses = async () => {
               <option>Bills</option>
               <option>Others</option>
             </select>
+          </div>
 
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Description <span className="text-gray-400">(optional)</span>
+            </label>
             <input
-              placeholder="Description"
-              className="w-full p-2 border rounded"
+              placeholder="e.g. Lunch with friends"
+              className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-500"
               value={description}
               onChange={e => setDescription(e.target.value)}
             />
+          </div>
 
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 active:scale-95 transition"
-            >
-              + Add Expense
-            </button>
-          </form>
-        </div>
+          {/* Submit */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg
+                      hover:bg-blue-700 active:scale-95 transition"
+          >
+            Add Expense
+          </button>
+
+        </form>
+      </div>
+
 
         {/* Expense List */}
         <div className="bg-white p-6 rounded-xl shadow">
