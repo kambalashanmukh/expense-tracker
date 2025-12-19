@@ -1,8 +1,8 @@
-# 💰 Expense Tracker – MERN Stack
+# Expense Tracker – MERN Stack
 
 A full-stack personal expense tracker built using the MERN stack with secure authentication, real-time analytics, and a modern, responsive UI.
 
-## 🚀 Features
+## Features
 
 -  JWT-based Authentication (Login & Register)
 -  Show / Hide password for better UX
@@ -15,7 +15,7 @@ A full-stack personal expense tracker built using the MERN stack with secure aut
 -  Automatic total expense calculation
 -  Modern responsive UI with Tailwind CSS
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 **Frontend**
 - React (Vite)
@@ -31,7 +31,7 @@ A full-stack personal expense tracker built using the MERN stack with secure aut
 - JWT Authentication
 - bcrypt.js
 
-## 📂 Project Structure
+##  Project Structure
 ```bash
 client/
 ├─ src/
@@ -48,20 +48,20 @@ server/
 ├─ middleware/
 └─ server.js
 ```
-## 🔑 Authentication Flow
+## Authentication Flow
 
 - Users register and login securely
 - JWT token stored in localStorage
 - Protected routes using auth middleware
 - Expenses are user-specific and isolated
 
-## 📊 Analytics
+## Analytics
 
 - Category-wise spending visualization
 - Monthly expense trends
 - Dynamic recalculation on add/edit/delete
 
-## 📸 Screenshots
+## Screenshots
 
 ### 📝 Register Page
 ![Register Page](client/public/register-page.png)
